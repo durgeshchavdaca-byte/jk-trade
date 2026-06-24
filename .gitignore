@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Unused source duplicates (clean-named copies are tracked)
+KKJK.bmp
+jk tradedfsg - Copy.png
+logo big.png
