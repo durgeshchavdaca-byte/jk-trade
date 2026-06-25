@@ -38,10 +38,24 @@
   }
 
   /* ============================================================
+     TITLE SLIDE-UP REVEAL  (wrap each title in overflow:hidden container)
+     ============================================================ */
+  $$('.hero__title, .sec-title, .feature__title').forEach(t => {
+    if (t.parentElement.classList.contains('title-wrap')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'title-wrap reveal-title';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  });
+
+  /* Add reveal-3d class to all .sec-head */
+  $$('.sec-head').forEach(h => h.classList.add('reveal-3d'));
+
+  /* ============================================================
      SCROLL REVEAL
      ============================================================ */
   const targets = $$(
-    '.sec-head > div, .sec-head > p, ' +
+    '.reveal-title, .reveal-3d, ' +
     '.stat, ' +
     '.prod, .app, .brand, ' +
     '.feature__row > div, ' +
@@ -85,7 +99,6 @@
   const heroEl      = $('.hero');
   const heroMedia   = $('.hero__media');
   const heroContent = $('.hero__content');
-  const cubeEl      = $('.cube');
   const featureMedia = $('.feature__media');
 
   // Sections with IDs to track in the side indicator
@@ -140,12 +153,15 @@
       }
     }
 
-    /* cube rotation tied to scroll */
-    if (cubeEl) {
-      const rotY = y * 0.35;
-      const rotX = -15 + Math.sin(y * 0.005) * 4;
-      cubeEl.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
-    }
+    /* watermark parallax  big digits drift opposite to scroll */
+    document.querySelectorAll('.has-watermark').forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top < innerHeight && rect.bottom > 0) {
+        const center = rect.top + rect.height / 2;
+        const offset = (center - innerHeight / 2) * -0.12;
+        sec.style.setProperty('--watermark-y', `${offset}px`);
+      }
+    });
 
     /* side scroll indicator */
     if (scrollNav && trackedSections.length) {
